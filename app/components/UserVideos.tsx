@@ -43,9 +43,8 @@ export const UserVideos = () => {
                 <video
                   src={video.url}
                   controls
-                  className="w-full aspect-video object-cover rounded-sm shadow-lg"
-                  // allow="fullscreen"
-                  allowFullScreen={true}
+                  className="w-full aspect-video rounded-sm shadow-lg"
+                // allow="fullscreen"
                 />
               ) : (
                 <p className="text-gray-700">
