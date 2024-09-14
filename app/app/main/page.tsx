@@ -18,6 +18,7 @@ import { useQuery } from "convex/react";
 import { Video } from "@/components/video";
 import { Image } from "@/components/image";
 import { Container } from "@mui/material";
+import LogoutButton from '@/components/logout';
 
 export default function Home() {
   const generateUploadUrl = useMutation(api.videos.generateUploadUrl);
@@ -108,7 +109,10 @@ export default function Home() {
           className="w-full rounded-full p-6 text-xl pl-14"
         />
       </div>
-      
+      <div>
+        <LogoutButton />
+      </div>
+
       {/* VIDEO UPLOADER */}
       <Card className={"w-full max-w-md"}>
         <CardContent>
