@@ -8,7 +8,7 @@ export const generateUploadUrl = mutation(async (ctx) => {
 export const sendImage = mutation({
   args: { storageId: v.id("_storage"), author: v.string() },
   handler: async (ctx, args) => {
-    await ctx.db.insert("messages", {
+    await ctx.db.insert("videos", {
       body: args.storageId,
       author: args.author,
       format: "video",

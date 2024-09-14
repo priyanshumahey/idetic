@@ -17,8 +17,7 @@ import type {
 } from "convex/server";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
-import type * as message from "../message.js";
-import type * as tasks from "../tasks.js";
+import type * as videos from "../videos.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -31,8 +30,7 @@ import type * as tasks from "../tasks.js";
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
-  message: typeof message;
-  tasks: typeof tasks;
+  videos: typeof videos;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
