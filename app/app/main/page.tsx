@@ -16,9 +16,6 @@ import { Loader2, SearchIcon, UploadCloud } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { api } from "../../convex/_generated/api";
-import { Video } from "@/components/video";
-import { Image } from "@/components/image";
-import LogoutButton from '@/components/logout';
 
 export default function Home() {
   const generateUploadUrl = useMutation(api.videos.generateUploadUrl);
@@ -104,9 +101,6 @@ export default function Home() {
           }}
           className="w-full rounded-full p-6 text-xl pl-14"
         />
-      </div>
-      <div>
-        <LogoutButton />
       </div>
 
       {/* VIDEO UPLOADER */}
