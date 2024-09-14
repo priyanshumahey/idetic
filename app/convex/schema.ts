@@ -18,6 +18,7 @@ const schema = defineSchema({
     embedding: v.array(v.float64()),
     videoId: v.id("_storage"),
     timeStamp: v.int64(),
+    isText: v.boolean(),
   }).vectorIndex("by_embedding", {
     vectorField: "embedding",
     dimensions: 768,

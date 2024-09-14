@@ -21,3 +21,33 @@ export const sendImage = mutation({
     });
   },
 });
+
+export const list = query({
+  args: {},
+  handler: async (ctx) => {
+    const videos = await ctx.db.query("videos").collect();
+    return Promise.all(
+      videos.map(async (video) => ({
+        ...video,
+        ...{ url: await ctx.storage.getUrl(video.body) },
+      }))
+    );
+  },
+});
+
+export const getVideoUrl = query({
+  args: { videoId: v.id("_storage") },
+  handler: async (ctx, args) => {
+    const videos = await ctx.db
+      .query("videos")
+      .filter((q) => q.eq(q.field("body"), args.videoId))
+      .collect();
+
+    return Promise.all(
+      videos.map(async (video) => ({
+        ...video,
+        ...{ url: await ctx.storage.getUrl(video.body) },
+      }))
+    );
+  },
+});

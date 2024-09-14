@@ -16,6 +16,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as auth from "../auth.js";
+import type * as frameEmbedding from "../frameEmbedding.js";
 import type * as http from "../http.js";
 import type * as listMessages from "../listMessages.js";
 import type * as listUserVideos from "../listUserVideos.js";
@@ -31,6 +32,7 @@ import type * as videos from "../videos.js";
  */
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  frameEmbedding: typeof frameEmbedding;
   http: typeof http;
   listMessages: typeof listMessages;
   listUserVideos: typeof listUserVideos;
