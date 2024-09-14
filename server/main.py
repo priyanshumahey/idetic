@@ -43,7 +43,4 @@ def process(file_item: FileItem):
         result = subprocess.run(["./transcribe.sh", output_chunk_dir, file], capture_output=True, text=True)
         print(result)
 
-
-
-
     return {"Response": "Success"}
