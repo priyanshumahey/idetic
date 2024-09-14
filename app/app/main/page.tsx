@@ -35,6 +35,14 @@ export default function Home() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate a loading time for videos (e.g., fetch videos from server)
+    const timer = setTimeout(() => setIsLoading(false), 2000);
+
+    return () => clearTimeout(timer); // Clean up the timer on component unmount
+  }, []);
 
   async function handleSendVideo(event: FormEvent) {
     event.preventDefault();
@@ -102,7 +110,7 @@ export default function Home() {
           }}
           className="w-full rounded-full p-6 text-xl pl-14"
         />
-      </div>
+      </div> */}
 
       {/* VIDEO UPLOADER */}
       <Card className={"w-full"}>
