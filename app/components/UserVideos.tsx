@@ -38,12 +38,14 @@ export const UserVideos = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-5">
           {userVideos.map((video: any) => (
-            <div key={video._id} className="bg-gray-100 rounded-lg p-4 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1 cursor-pointer">
+            <div key={video._id} className="bg-gray-100 rounded-lg transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 cursor-pointer">
               {video.format === "video" ? (
                 <video
                   src={video.url}
                   controls
-                  className="w-full aspect-video object-cover rounded-lg"
+                  className="w-full aspect-video object-cover rounded-sm shadow-lg"
+                  // allow="fullscreen"
+                  allowFullScreen={true}
                 />
               ) : (
                 <p className="text-gray-700">
