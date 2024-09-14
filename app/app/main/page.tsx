@@ -1,4 +1,5 @@
 "use client";
+import styles from './page.module.css'
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,11 +14,16 @@ import { Loader2, SearchIcon, UploadCloud } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { api } from "../../convex/_generated/api";
+import { useQuery } from "convex/react";
+import { Video } from "@/components/video";
+import { Image } from "@/components/image";
+import { Container } from "@mui/material";
 
 export default function Home() {
   const generateUploadUrl = useMutation(api.videos.generateUploadUrl);
   const sendImage = useMutation(api.videos.sendImage);
   const { user, isAuthenticated } = useAuth0();
+  const messages = useQuery(api.listMessages.list);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -85,11 +91,16 @@ export default function Home() {
     }
   }
 
+  const filteredVideos = messages?.filter(message =>
+    message.format === "video" && message.author.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="flex flex-col items-center justify-center h-full mt-8 space-y-4">
+    <Container className={`mt-8 flex justify-center ${styles.container}`}>
       <div className="max-w-lg flex items-center justify-center w-full space-x-4 relative">
         <SearchIcon className="w-6 h-6 text-gray-400 absolute left-8" />
         <Input
+          placeholder="Type in a search query"
           type="text"
           onChange={(event) => {
             setSearchTerm(event.target.value);
@@ -97,8 +108,9 @@ export default function Home() {
           className="w-full rounded-full p-6 text-xl pl-14"
         />
       </div>
-
-      <Card className="w-full max-w-md">
+      
+      {/* VIDEO UPLOADER */}
+      <Card className={"w-full max-w-md"}>
         <CardContent>
           <form onSubmit={handleSendVideo} className="space-y-4">
             <div className="mt-4">
@@ -161,6 +173,23 @@ export default function Home() {
           </Button>
         </CardFooter>
       </Card>
-    </div>
+
+
+      <div>
+        {messages?.map((message) => (
+          message.format === "video" && message.url && (
+            <div key={message._id}>
+              <video controls>
+                <source src={`${message.url}#t=1,4`} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          )
+        ))}
+      </div>
+
+    </Container>
+    // <div className=" h-full mt-8 space-y-4">
+    // </div>
   );
 }
