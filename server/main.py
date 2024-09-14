@@ -4,7 +4,7 @@ import subprocess
 
 from fastapi import FastAPI
 from pydantic import BaseModel
-from utils.utils import split_audio
+from utils.utils import split_audio, embed_text_chunks
 
 import ffmpeg
 from dotenv import load_dotenv
@@ -45,7 +45,19 @@ def process(file_item: FileItem):
         result = subprocess.run(["./transcribe.sh", output_chunk_dir, file], capture_output=True, text=True)
         text_files.append(f"{output_chunk_dir}/{file}.txt")
         print(result)
-    
+
+
+    embedding_input = [] 
+    for text_file in text_files:
+        with open(text_file, 'r') as tf:
+            embed_input_str = tf.read()
+            embedding_input.append(embed_input_str)
+        pass
+
+    embeddings = embed_text_chunks(embedding_input)
+
+    print(embeddings.shape)
+
 
     return {"Response": "Success"}
 
