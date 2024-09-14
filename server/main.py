@@ -4,7 +4,7 @@ import subprocess
 
 from fastapi import FastAPI
 from pydantic import BaseModel
-from utils.utils import split_audio, embed_text_chunks, embed_video
+from utils.utils import split_audio, embed_text_chunks, embed_text, embed_video
 
 import ffmpeg
 from dotenv import load_dotenv
@@ -17,6 +17,10 @@ app = FastAPI()
 
 class FileItem(BaseModel):
     path: str
+
+
+class SearchItem(BaseModel):
+    search_string: str
 
 
 @app.get("/")
@@ -85,6 +89,12 @@ def process(file_item: FileItem):
 
 
     return {"Response": "Success"}
+
+
+@app.post("/search")
+def search(search_item: SearchItem):
+     embedding = embed_text(search_item.search_string)
+
 
 # [text1, text3, ...]
 # [embed1, embed2, embed, ....]

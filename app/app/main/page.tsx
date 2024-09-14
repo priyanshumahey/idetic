@@ -113,8 +113,8 @@ export default function Home() {
       </div> */}
 
       {/* VIDEO UPLOADER */}
-      <Card className={"w-full"}>
-        <CardContent>
+      <Card className="w-full">
+        <CardContent className=''>
           <form onSubmit={handleSendVideo} className="space-y-4">
             <div className="mt-4">
               <h2 className="text-center">Upload your videos here</h2>
@@ -159,12 +159,12 @@ export default function Home() {
             )}
           </form>
         </CardContent>
-        <CardFooter>
+        <CardFooter className='flex justify-center'>
           <Button
             type="submit"
             onClick={handleSendVideo}
             disabled={!selectedVideo || isUploading}
-            className="w-full"
+            className="w-full max-w-xs"
           >
             {isUploading ? (
               <>
