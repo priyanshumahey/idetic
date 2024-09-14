@@ -34,21 +34,27 @@ export const uploadEmbedding = mutation({
   },
 });
 
-// export const uploadEmbeddings = mutation({
-//   args: {
-//     embeddingList: v.array({
-//       embedding: v.array(v.float64()),
-//       isText: v.boolean(),
-//       videoId: v.id("_storage"),
-//       timeStamp: v.int64(),
-//     }),
-//   },
-//   handler: async (ctx, args) => {
-//     // await ctx.db.insert("frameEmbeddings", {
-//     //   embedding,
-//     //   isText,
-//     //   videoId,
-//     //   timeStamp,
-//     // });
-//   },
-// });
+export const uploadEmbeddings = mutation({
+  args: {
+    embeddingList: v.array(
+      v.object({
+        embedding: v.array(v.float64()),
+        isText: v.boolean(),
+        videoId: v.id("_storage"),
+        timeStamp: v.int64(),
+      })
+    ),
+  },
+  handler: async (ctx, args) => {
+    for (const item of args.embeddingList) {
+      const { embedding, isText, videoId, timeStamp } = item;
+
+      await ctx.db.insert("frameEmbeddings", {
+        embedding,
+        isText,
+        videoId,
+        timeStamp,
+      });
+    }
+  },
+});
