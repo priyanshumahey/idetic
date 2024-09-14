@@ -62,16 +62,42 @@ def process(file_item: FileItem):
     print(embeddings.shape)
     print(video_embeddings.shape)
 
+    mega_embedding = []
+
+    for i, el in enumerate(video_embeddings):
+        embedding = {
+            "isText": False,
+            "embedding": el,
+            "ts": i
+        }
+        mega_embedding.append(embedding)
+
+    for i, el in enumerate(embeddings):
+        embedding = {
+            "isText": True,
+            "embedding": el,
+            "ts": i*10
+
+        }
+        mega_embedding.append(embedding)
+        
+    print(mega_embedding)
+
 
     return {"Response": "Success"}
 
 # [text1, text3, ...]
 # [embed1, embed2, embed, ....]
 
-# [
-#     {
-#         text: str,
-#         timestamp: int,
-#         embedding: [...]
+
+# {
+#     uuid_ts: {
+#         text: str
+#         embedding: embedding
+#         ts: int
+
 #     }
-# ]
+# }
+
+
+# uuid_ts 
