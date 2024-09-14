@@ -159,12 +159,12 @@ export default function Home() {
             )}
           </form>
         </CardContent>
-        <CardFooter>
+        <CardFooter className='flex justify-center'>
           <Button
             type="submit"
             onClick={handleSendVideo}
             disabled={!selectedVideo || isUploading}
-            className="w-full"
+            className="w-full max-w-xs"
           >
             {isUploading ? (
               <>
