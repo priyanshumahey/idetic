@@ -102,8 +102,8 @@ export default function Home() {
           }}
           className="w-full rounded-full p-6 text-xl pl-14"
         />
-      </div> */}
-      
+      </div>
+
       {/* VIDEO UPLOADER */}
       <Card className={"w-full"}>
         <CardContent>
