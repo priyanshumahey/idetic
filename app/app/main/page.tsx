@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import styles from './page.module.css'
+import styles from './page.module.css';
 
 import { Button } from "@/components/ui/button";
 import {
@@ -9,15 +10,12 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useMutation } from "convex/react";
+import { Container } from "@mui/material";
+import { useMutation, useQuery } from "convex/react";
 import { Loader2, SearchIcon, UploadCloud } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { api } from "../../convex/_generated/api";
-import { useQuery } from "convex/react";
-import { Video } from "@/components/video";
-import { Image } from "@/components/image";
-import { Container } from "@mui/material";
 
 export default function Home() {
   const generateUploadUrl = useMutation(api.videos.generateUploadUrl);
@@ -90,10 +88,6 @@ export default function Home() {
       toast.error("An error occurred. Please try again.");
     }
   }
-
-  const filteredVideos = messages?.filter(message =>
-    message.format === "video" && message.author.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
     <Container className={`mt-8 flex justify-center ${styles.container}`}>

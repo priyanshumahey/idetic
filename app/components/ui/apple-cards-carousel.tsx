@@ -1,17 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, {
+  createContext,
+  useContext,
   useEffect,
   useRef,
   useState,
-  createContext,
-  useContext,
 } from "react";
 
+import { useOutsideClick } from "@/hooks/use-outside-click";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import Image, { ImageProps } from "next/image";
-import { useOutsideClick } from "@/hooks/use-outside-click";
 import { ArrowLeft, ArrowRight, XIcon } from "lucide-react";
+import Image, { ImageProps } from "next/image";
 
 interface CarouselProps {
   items: JSX.Element[];
