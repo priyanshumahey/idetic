@@ -9,6 +9,11 @@ const schema = defineSchema({
         author: v.string(),
         format: v.string(),
     }),
+    messages: defineTable({
+        body: v.id("_storage"),
+        author: v.string(),
+        format: v.string(),
+    }),
 });
 
 export default schema;
