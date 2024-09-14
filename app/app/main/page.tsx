@@ -16,6 +16,7 @@ import { Loader2, SearchIcon, UploadCloud } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { api } from "../../convex/_generated/api";
+import { UserVideos } from '@/components/UserVideos';
 
 export default function Home() {
   const generateUploadUrl = useMutation(api.videos.generateUploadUrl);
@@ -91,7 +92,7 @@ export default function Home() {
 
   return (
     <Container className={`mt-8 flex justify-center ${styles.container}`}>
-      <div className="max-w-lg flex items-center justify-center w-full space-x-4 relative">
+      {/* <div className="max-w-lg flex items-center justify-center w-full space-x-4 relative">
         <SearchIcon className="w-6 h-6 text-gray-400 absolute left-8" />
         <Input
           placeholder="Type in a search query"
@@ -104,10 +105,11 @@ export default function Home() {
       </div>
 
       {/* VIDEO UPLOADER */}
-      <Card className={"w-full max-w-md"}>
+      <Card className={"w-full"}>
         <CardContent>
           <form onSubmit={handleSendVideo} className="space-y-4">
             <div className="mt-4">
+              <h2 className="text-center">Upload your videos here</h2>
               <div className="flex items-center justify-center w-full">
                 <label
                   htmlFor="video-upload"
@@ -169,18 +171,7 @@ export default function Home() {
       </Card>
 
 
-      <div>
-        {messages?.map((message) => (
-          message.format === "video" && message.url && (
-            <div key={message._id}>
-              <video controls>
-                <source src={`${message.url}#t=1,4`} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          )
-        ))}
-      </div>
+      <UserVideos />
 
     </Container>
     // <div className=" h-full mt-8 space-y-4">

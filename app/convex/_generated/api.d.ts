@@ -18,6 +18,7 @@ import type {
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
 import type * as listMessages from "../listMessages.js";
+import type * as listUserVideos from "../listUserVideos.js";
 import type * as videos from "../videos.js";
 
 /**
@@ -32,6 +33,7 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
   listMessages: typeof listMessages;
+  listUserVideos: typeof listUserVideos;
   videos: typeof videos;
 }>;
 export declare const api: FilterApi<
