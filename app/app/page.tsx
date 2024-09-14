@@ -4,15 +4,29 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const Profile = () => {
-  const { isAuthenticated, isLoading } = useAuth0();
-  const { loginWithRedirect } = useAuth0();
+  const { isAuthenticated, isLoading, loginWithRedirect, handleRedirectCallback } = useAuth0();
   const router = useRouter();
 
   if (isLoading) {
     return <div>Loading ...</div>;
   }
+
+  useEffect(() => {
+    if (window.location.search.includes("code=")) {
+      handleRedirectCallback().then(() => {
+        router.push("/main");
+      });
+    }
+  }, [handleRedirectCallback, router]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/main");
+    }
+  }, [isAuthenticated, router]);
 
   function onSubmit() {
     if (isAuthenticated) {
