@@ -4,16 +4,14 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+  CardFooter
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation } from "convex/react";
-import { Loader2, UploadCloud } from "lucide-react";
+import { Loader2, SearchIcon, UploadCloud } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import { api } from "../../convex/_generated/api";
 
 export default function Home() {
@@ -31,6 +29,7 @@ export default function Home() {
   const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [name] = useState(() => "User " + Math.floor(Math.random() * 10000));
 
@@ -62,8 +61,10 @@ export default function Home() {
           setSelectedVideo(null);
           setUploadProgress(0);
           if (videoInput.current) videoInput.current.value = "";
+          toast("Upload successful!");
         } else {
           console.error("Upload failed");
+          toast.error("Upload failed. Please try again.");
         }
         setIsUploading(false);
       };
@@ -71,42 +72,44 @@ export default function Home() {
       xhr.onerror = () => {
         console.error("Upload failed");
         setIsUploading(false);
+        toast.error("Upload failed. Please try again.");
       };
 
       xhr.send(selectedVideo);
     } catch (error) {
       console.error("Error during upload:", error);
       setIsUploading(false);
+      toast.error("An error occurred. Please try again.");
     }
   }
 
   return (
-    <div className="flex items-center justify-center h-full">
+    <div className="flex flex-col items-center justify-center h-full mt-8 space-y-4">
+      <div className="max-w-lg flex items-center justify-center w-full space-x-4 relative">
+        <SearchIcon className="w-6 h-6 text-gray-400 absolute left-8" />
+        <Input
+          type="text"
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+          }}
+          className="w-full rounded-full p-6 text-xl pl-14"
+        />
+      </div>
+
       <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">
-            Upload Video
-          </CardTitle>
-        </CardHeader>
         <CardContent>
           <form onSubmit={handleSendVideo} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="video-upload" className="text-sm font-medium">
-                Choose a video file
-              </Label>
+            <div className="mt-4">
               <div className="flex items-center justify-center w-full">
                 <label
                   htmlFor="video-upload"
-                  className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                  className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
                 >
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <UploadCloud className="w-10 h-10 mb-3 text-gray-400" />
+                  <div className="flex flex-col items-center justify-center pt-2 pb-3">
+                    <UploadCloud className="w-10 h-10 text-gray-400" />
                     <p className="mb-2 text-sm text-gray-500">
                       <span className="font-semibold">Click to upload</span> or
                       drag and drop
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      MP4, AVI, MOV (MAX. 100MB)
                     </p>
                   </div>
                   <Input
