@@ -2,7 +2,6 @@ from transformers import AutoTokenizer, AutoModel, AutoProcessor
 import cv2
 from PIL import Image
 import torch
-from time import clock
 
 model = AutoModel.from_pretrained("google/siglip-base-patch16-224")
 tokenizer = AutoTokenizer.from_pretrained("google/siglip-base-patch16-224")
@@ -61,7 +60,19 @@ def embed_video(video_path):
     images = get_images(video_path)
     return embed_images(images)
 
+def embed_text(text):
+    inputs = tokenizer([text], padding="max_length", return_tensors="pt")
+    with torch.no_grad():
+        text_embedding = model.get_text_features(**inputs)[0]
+    
+    return text_embedding
+
 if __name__ == "__main__":
     file_path = "test.mp4"
     embeddings = embed_video(file_path)
     print(embeddings.shape)
+
+    fire_embedding = embed_text('fire')
+    snow_embedding = embed_text('snow')
+    print(fire_embedding, snow_embedding)
+
