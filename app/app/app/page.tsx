@@ -32,10 +32,12 @@ export default function Home() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  const [name] = useState(() => "User " + Math.floor(Math.random() * 10000));
-
   async function handleSendVideo(event: FormEvent) {
     event.preventDefault();
+    if (!user?.sub) {
+      console.log("User not authenticated");
+      return;
+    }
     setIsUploading(true);
 
     try {
@@ -58,7 +60,7 @@ export default function Home() {
         if (xhr.status === 200) {
           const { storageId } = JSON.parse(xhr.responseText);
           // Step 3: Save the newly allocated storage id to the database
-          await sendImage({ storageId, author: name });
+          await sendImage({ storageId, author: user?.sub || '' });
           setSelectedVideo(null);
           setUploadProgress(0);
           if (videoInput.current) videoInput.current.value = "";

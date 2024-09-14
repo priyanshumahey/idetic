@@ -13,21 +13,19 @@ const Profile = () => {
 
   return (
     <div>
-      {isAuthenticated && (
+      {isAuthenticated ? (
         <div>
-          <img
-            src={user?.picture || ""}
-            alt={user?.name || ""}
-          />
-          <h4>{user?.sub}</h4>
-          <p>{user?.name}</p>
-          <p>{user?.email}</p>
+          <h2>Logged In</h2>
+          <img src={user?.picture || ""} alt={user?.name || ""} />
+          <h4>User ID: {user?.sub}</h4>
+          <p>Name: {user?.name}</p>
+          <p>Email: {user?.email}</p>
           <LogoutButton />
         </div>
-      )}
-      {!isAuthenticated && (
+      ) : (
         <div>
-          <h2>Not logged in</h2>
+          <h2>Not Logged In</h2>
+          <p>Please log in to view your profile.</p>
           <LoginButton />
         </div>
       )}
