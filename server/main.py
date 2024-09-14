@@ -1,12 +1,14 @@
 from typing import Union
 import os
+import subprocess
 
 from fastapi import FastAPI
 from pydantic import BaseModel
-from utils import transcribe
+from utils.utils import split_audio
 
 import ffmpeg
 from dotenv import load_dotenv
+import subprocess
 
 load_dotenv()
 
@@ -28,16 +30,17 @@ def process(file_item: FileItem):
     [file_name, file_format] = file_item.path.split('.')
 
     # Extract audio from video and convert to WAV
-    if not os.path.exists(f'data/processed/{file_name}'):
-        os.mkdir(f'data/processed/{file_name}')
+    os.makedirs(f'data/processed/{file_name}', exist_ok=True)
 
     audio_file_path = f'data/processed/{file_name}/{file_name}.wav'
     ffmpeg.input(f'data/unprocessed/{file_item.path}').output(audio_file_path, ar=16000, ac=1, acodec='pcm_s16le').run()
 
+    output_chunk_dir = f"data/processed/{file_name}/{file_name}_chunks"
 
+    split_audio(audio_file_path, output_chunk_dir, 15)
 
+    for file in os.listdir(output_chunk_dir):
+        result = subprocess.run(["./transcribe.sh", output_chunk_dir, file], capture_output=True, text=True)
+        print(result)
 
     return {"Response": "Success"}
-
-
-

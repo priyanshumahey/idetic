@@ -1,34 +1,47 @@
 "use client";
 
-import LoginButton from "@/components/login";
-import LogoutButton from "@/components/logout";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useRouter } from "next/navigation";
 
 const Profile = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, isLoading } = useAuth0();
+  const { loginWithRedirect } = useAuth0();
+  const router = useRouter();
 
   if (isLoading) {
     return <div>Loading ...</div>;
   }
 
+  function onSubmit() {
+    if (isAuthenticated) {
+      router.push("/main");
+      console.log("User is authenticated");
+    } else {
+      loginWithRedirect();
+      console.log("User is not authenticated");
+    }
+  }
+
   return (
-    <div>
-      {isAuthenticated ? (
+    <div className="flex flex-col space-y-4 justify-center items-center h-screen">
+      <div className="flex flex-col space-y-2 justify-center items-center">
         <div>
-          <h2>Logged In</h2>
-          <img src={user?.picture || ""} alt={user?.name || ""} />
-          <h4>User ID: {user?.sub}</h4>
-          <p>Name: {user?.name}</p>
-          <p>Email: {user?.email}</p>
-          <LogoutButton />
+          <Card className="p-4 flex flex-col space-y-2 justify-center items-center">
+            <CardTitle>Get Started</CardTitle>
+            <CardContent>
+              <Button
+                size="lg"
+                className="bg-violet-200 text-black hover:bg-violet-300"
+                onClick={onSubmit}
+              >
+                Continue!
+              </Button>
+            </CardContent>
+          </Card>
         </div>
-      ) : (
-        <div>
-          <h2>Not Logged In</h2>
-          <p>Please log in to view your profile.</p>
-          <LoginButton />
-        </div>
-      )}
+      </div>
     </div>
   );
 };

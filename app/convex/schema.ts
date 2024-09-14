@@ -9,6 +9,11 @@ const schema = defineSchema({
     author: v.string(),
     format: v.string(),
   }),
+  messages: defineTable({
+    body: v.id("_storage"),
+    author: v.string(),
+    format: v.string(),
+  }),
   frameEmbeddings: defineTable({
     embedding: v.array(v.float64()),
     videoId: v.id("_storage"),

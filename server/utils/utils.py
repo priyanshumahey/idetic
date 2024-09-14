@@ -1,8 +1,5 @@
-
-
-
-def transcribe(file_path: str):
-    pass
+import os
+import subprocess
 
 def split_audio(input_file, output_dir, chunk_length=10):
     # Get the filename without the extension and directory
