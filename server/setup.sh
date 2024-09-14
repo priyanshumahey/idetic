@@ -1,5 +1,5 @@
 mkdir data
-rmdir -r -f data/processed
+rmdir -r data/processed
 mkdir data/processed
 mkdir data/unprocessed
 
