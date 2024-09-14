@@ -4,7 +4,7 @@ import subprocess
 
 from fastapi import FastAPI
 from pydantic import BaseModel
-from utils.utils import split_audio, embed_text_chunks
+from utils.utils import split_audio, embed_text_chunks, embed_video
 
 import ffmpeg
 from dotenv import load_dotenv
@@ -37,7 +37,7 @@ def process(file_item: FileItem):
 
     output_chunk_dir = f"data/processed/{file_name}/{file_name}_chunks"
 
-    split_audio(audio_file_path, output_chunk_dir, 15)
+    split_audio(audio_file_path, output_chunk_dir, 10)
 
     text_files = []
 
@@ -56,7 +56,11 @@ def process(file_item: FileItem):
 
     embeddings = embed_text_chunks(embedding_input)
 
+
+    video_embeddings = embed_video(f'data/unprocessed/{file_item.path}')
+
     print(embeddings.shape)
+    print(video_embeddings.shape)
 
 
     return {"Response": "Success"}
