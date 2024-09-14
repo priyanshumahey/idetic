@@ -88,7 +88,7 @@ def embed_video(video_path):
     return embed_images(images)
 
 def embed_text(text):
-    inputs = tokenizer([text], padding="max_length", return_tensors="pt")
+    inputs = tokenizer([text], padding="max_length", truncation=True, return_tensors="pt")
     with torch.no_grad():
         text_embedding = model.get_text_features(**inputs)[0]
     
@@ -100,7 +100,7 @@ def embed_text_chunks(chunks, batch_size=64):
     embeddings = None
 
     for i in range(0, len(chunks), batch_size):
-        inputs = tokenizer(chunks[i:i + batch_size], padding="max_length", return_tensors="pt")
+        inputs = tokenizer(chunks[i:i + batch_size], truncation=True, padding="max_length", return_tensors="pt")
 
         with torch.no_grad():
             image_features = model.get_text_features(**inputs)
