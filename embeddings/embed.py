@@ -68,6 +68,24 @@ def embed_text(text):
     
     return text_embedding
 
+# use this function if you want to embed multiple pieces of text at the same time
+# paralellizes things a little more
+def embed_text_chunks(chunks, batch_size=64):
+    embeddings = None
+
+    for i in range(0, len(chunks), batch_size):
+        inputs = tokenizer(chunks[i:i + batch_size], padding="max_length", return_tensors="pt")
+
+        with torch.no_grad():
+            image_features = model.get_text_features(**inputs)
+        
+        if embeddings is None:
+            embeddings = image_features
+        else:
+            embeddings = torch.cat((embeddings, image_features), dim=0)
+    
+    return embeddings
+
 def calculate_similarity(a, b):
     dot_product = np.dot(a, b)
     normA = np.linalg.norm(a)
@@ -85,4 +103,6 @@ if __name__ == "__main__":
     snow_embedding = embed_text('snow')
     mountain_embedding = embed_text('snowy mountains, sunny day with blue sky')
     print(calculate_similarity(embeddings[0], fire_embedding), calculate_similarity(embeddings[0], snow_embedding), calculate_similarity(embeddings[0], mountain_embedding), calculate_similarity(embeddings[0], spider_man_embedding))
+
+    print(embed_text_chunks(["fire", "water", "earth", "air"]).shape)
 
