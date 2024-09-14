@@ -3,6 +3,8 @@
 import { useMutation, useQuery } from "convex/react";
 import { FormEvent, useRef, useState } from "react";
 import { api } from "../convex/_generated/api";
+import LoginButton from "@/components/login";
+import LogoutButton from "@/components/logout";
 
 export default function Home() {
   const tasks = useQuery(api.tasks.get);
@@ -38,18 +40,20 @@ export default function Home() {
         {tasks?.map(({ _id, text }) => <div key={_id}>{text}</div>)}
       </main>
       <form onSubmit={handleSendImage}>
-      <input
-        type="file"
-        ref={imageInput}
-        onChange={(event) => setSelectedImage(event.target.files![0])}
-        disabled={selectedImage !== null}
-      />
-      <input
-        type="submit"
-        value="Send Image"
-        disabled={selectedImage === null}
-      />
-    </form>
+        <input
+          type="file"
+          ref={imageInput}
+          onChange={(event) => setSelectedImage(event.target.files![0])}
+          disabled={selectedImage !== null}
+        />
+        <input
+          type="submit"
+          value="Send Image"
+          disabled={selectedImage === null}
+        />
+      </form>
+      <LoginButton />
+      <LogoutButton />
     </div>
   );
 }
