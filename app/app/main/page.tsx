@@ -16,6 +16,7 @@ import { Loader2, SearchIcon, UploadCloud } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { api } from "../../convex/_generated/api";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
   const generateUploadUrl = useMutation(api.videos.generateUploadUrl);
@@ -34,6 +35,14 @@ export default function Home() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate a loading time for videos (e.g., fetch videos from server)
+    const timer = setTimeout(() => setIsLoading(false), 2000);
+
+    return () => clearTimeout(timer); // Clean up the timer on component unmount
+  }, []);
 
   async function handleSendVideo(event: FormEvent) {
     event.preventDefault();
@@ -91,7 +100,7 @@ export default function Home() {
 
   return (
     <Container className={`mt-8 flex justify-center ${styles.container}`}>
-      <div className="max-w-lg flex items-center justify-center w-full space-x-4 relative">
+      {/* <div className="max-w-lg flex items-center justify-center w-full space-x-4 relative">
         <SearchIcon className="w-6 h-6 text-gray-400 absolute left-8" />
         <Input
           placeholder="Type in a search query"
@@ -101,7 +110,7 @@ export default function Home() {
           }}
           className="w-full rounded-full p-6 text-xl pl-14"
         />
-      </div>
+      </div> */}
 
       {/* VIDEO UPLOADER */}
       <Card className={"w-full max-w-md"}>
@@ -168,18 +177,29 @@ export default function Home() {
         </CardFooter>
       </Card>
 
-
-      <div>
-        {messages?.map((message) => (
-          message.format === "video" && message.url && (
-            <div key={message._id}>
-              <video controls>
-                <source src={`${message.url}#t=1,4`} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+      {/* VIDEO DISPLAY */}
+      <div className='w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 m-5'>
+        {isLoading
+          ? Array(9).fill(0).map((_, idx) => (
+            <div key={idx} className='aspect-video w-full'>
+              <Skeleton className="w-full h-full rounded-lg" />
             </div>
-          )
-        ))}
+          ))
+          : messages?.map((message) => (
+            message.format === "video" && message.url && (
+              <div key={message._id} className='aspect-video w-full'>
+                <video
+                  className='w-full h-full object-cover rounded-lg'
+                  controls
+                  preload='metadata'
+                >
+                  <source src={`${message.url}#t=0.1`} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            )
+          ))
+        }
       </div>
 
     </Container>
