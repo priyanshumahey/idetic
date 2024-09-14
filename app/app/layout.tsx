@@ -5,7 +5,7 @@ import "./globals.css";
 
 const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-inter', // optional
+  variable: '--font-inter',
 })
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} antialiased`}
+        className={`${inter.variable} antialiased container`}
       >
         <ConvexClientProvider>{children}</ConvexClientProvider>
       </body>

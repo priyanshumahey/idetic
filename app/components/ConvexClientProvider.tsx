@@ -8,12 +8,14 @@ import { ReactNode } from "react";
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
 export function ConvexClientProvider({ children }: { children: ReactNode }) {
+  const redirectUri = typeof window !== "undefined" ? window.location.origin : "";
+
   return (
     <Auth0Provider
       domain={process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL || ""}
       clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID || ""}
       authorizationParams={{
-        redirect_uri: window && window.location.origin
+        redirect_uri: redirectUri,
       }}
       useRefreshTokens={true}
       cacheLocation="localstorage"
