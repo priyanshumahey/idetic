@@ -2,6 +2,7 @@ from transformers import AutoTokenizer, AutoModel, AutoProcessor
 import cv2
 from PIL import Image
 import torch
+import numpy as np
 
 model = AutoModel.from_pretrained("google/siglip-base-patch16-224")
 tokenizer = AutoTokenizer.from_pretrained("google/siglip-base-patch16-224")
@@ -67,12 +68,21 @@ def embed_text(text):
     
     return text_embedding
 
+def calculate_similarity(a, b):
+    dot_product = np.dot(a, b)
+    normA = np.linalg.norm(a)
+    normB = np.linalg.norm(b)
+    sim = dot_product / (normA * normB);
+    return sim
+
 if __name__ == "__main__":
     file_path = "test.mp4"
     embeddings = embed_video(file_path)
     print(embeddings.shape)
 
     fire_embedding = embed_text('fire')
+    spider_man_embedding = embed_text('spiderman fighting the green goblin')
     snow_embedding = embed_text('snow')
-    print(fire_embedding, snow_embedding)
+    mountain_embedding = embed_text('snowy mountains, sunny day with blue sky')
+    print(calculate_similarity(embeddings[0], fire_embedding), calculate_similarity(embeddings[0], snow_embedding), calculate_similarity(embeddings[0], mountain_embedding), calculate_similarity(embeddings[0], spider_man_embedding))
 
