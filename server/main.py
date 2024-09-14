@@ -39,8 +39,23 @@ def process(file_item: FileItem):
 
     split_audio(audio_file_path, output_chunk_dir, 15)
 
+    text_files = []
+
     for file in os.listdir(output_chunk_dir):
         result = subprocess.run(["./transcribe.sh", output_chunk_dir, file], capture_output=True, text=True)
+        text_files.append(f"{output_chunk_dir}/{file}.txt")
         print(result)
+    
 
     return {"Response": "Success"}
+
+# [text1, text3, ...]
+# [embed1, embed2, embed, ....]
+
+# [
+#     {
+#         text: str,
+#         timestamp: int,
+#         embedding: [...]
+#     }
+# ]
