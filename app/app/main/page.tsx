@@ -16,7 +16,7 @@ import { Loader2, SearchIcon, UploadCloud } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { api } from "../../convex/_generated/api";
-import { Skeleton } from "@/components/ui/skeleton";
+import { UserVideos } from '@/components/UserVideos';
 
 export default function Home() {
   const generateUploadUrl = useMutation(api.videos.generateUploadUrl);
@@ -113,10 +113,11 @@ export default function Home() {
       </div> */}
 
       {/* VIDEO UPLOADER */}
-      <Card className={"w-full max-w-md"}>
+      <Card className={"w-full"}>
         <CardContent>
           <form onSubmit={handleSendVideo} className="space-y-4">
             <div className="mt-4">
+              <h2 className="text-center">Upload your videos here</h2>
               <div className="flex items-center justify-center w-full">
                 <label
                   htmlFor="video-upload"
@@ -177,30 +178,8 @@ export default function Home() {
         </CardFooter>
       </Card>
 
-      {/* VIDEO DISPLAY */}
-      <div className='w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 m-5'>
-        {isLoading
-          ? Array(9).fill(0).map((_, idx) => (
-            <div key={idx} className='aspect-video w-full'>
-              <Skeleton className="w-full h-full rounded-lg" />
-            </div>
-          ))
-          : messages?.map((message) => (
-            message.format === "video" && message.url && (
-              <div key={message._id} className='aspect-video w-full'>
-                <video
-                  className='w-full h-full object-cover rounded-lg'
-                  controls
-                  preload='metadata'
-                >
-                  <source src={`${message.url}#t=0.1`} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            )
-          ))
-        }
-      </div>
+
+      <UserVideos />
 
     </Container>
     // <div className=" h-full mt-8 space-y-4">

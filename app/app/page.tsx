@@ -10,10 +10,6 @@ const Profile = () => {
   const { isAuthenticated, isLoading, loginWithRedirect, handleRedirectCallback } = useAuth0();
   const router = useRouter();
 
-  if (isLoading) {
-    return <div>Loading ...</div>;
-  }
-
   useEffect(() => {
     if (window.location.search.includes("code=")) {
       handleRedirectCallback().then(() => {
@@ -27,6 +23,10 @@ const Profile = () => {
       router.push("/main");
     }
   }, [isAuthenticated, router]);
+
+  if (isLoading) {
+    return <div>Loading ...</div>;
+  }
 
   function onSubmit() {
     if (isAuthenticated) {
