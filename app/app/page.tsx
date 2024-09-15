@@ -7,7 +7,12 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const Profile = () => {
-  const { isAuthenticated, isLoading, loginWithRedirect, handleRedirectCallback } = useAuth0();
+  const {
+    isAuthenticated,
+    isLoading,
+    loginWithRedirect,
+    handleRedirectCallback,
+  } = useAuth0();
   const router = useRouter();
 
   useEffect(() => {
