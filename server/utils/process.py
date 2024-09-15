@@ -2,7 +2,7 @@ from typing import Union
 import os
 import subprocess
 
-from utils.file_transfer import download_video, upload_list
+from utils.file_transfer import download_video, upload_list, grab_all_vid_ids
 from utils.utils import split_audio
 from utils.embedding import  embed_text_chunks, embed_video
 
@@ -13,7 +13,10 @@ import subprocess
 load_dotenv()
 
 def process_handler(uuid: str):
-    print(os.listdir("data/unprocessed"))
+    if uuid in os.listdir("data/processed"):
+        print(os.listdir("data/processed"))
+        print("Already processed")
+        return
 
     # Extract audio from video and convert to WAV
     os.makedirs(f'data/processed/{uuid}', exist_ok=True)
@@ -53,7 +56,8 @@ def process_handler(uuid: str):
         embedding = {
             "isText": False,
             "embedding": el,
-            "ts": i
+            "timeStamp": i,
+            "videoId": uuid
         }
         mega_embedding.append(embedding)
 
@@ -66,6 +70,14 @@ def process_handler(uuid: str):
 
         }
         mega_embedding.append(embedding)
-        
-    upload_list(mega_embedding)
 
+    upload_list(mega_embedding)
+    os.remove(video_file_path)
+
+def process_all():
+    all_vids = grab_all_vid_ids()
+    processed = os.listdir("data/processed")
+    for vid in all_vids:
+        if vid not in processed:
+            process_handler(vid)
+            print("Processed: ", vid)

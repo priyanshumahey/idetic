@@ -33,9 +33,6 @@ def grab_all_vid_ids():
     results = client.query("videos:get")
     return [vid['body'] for vid in results]
 
-def process_unprocessed_vids():
-    pass
-
 def upload_list(embedding_list):
     # just convert our torch tensors to python lists to upload
     upload_list = [

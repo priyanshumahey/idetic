@@ -4,7 +4,7 @@ import subprocess
 
 from fastapi import FastAPI
 from pydantic import BaseModel
-from utils.process import process_handler
+from utils.process import process_handler, process_all
 
 import ffmpeg
 from dotenv import load_dotenv
@@ -13,6 +13,7 @@ import subprocess
 load_dotenv()
 
 app = FastAPI()
+process_all()
 
 
 class FileItem(BaseModel):
