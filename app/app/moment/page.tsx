@@ -65,8 +65,8 @@ export default function StreamPage() {
                                 <button
                                     key={timestamp}
                                     className={`px-4 py-2 rounded transition-colors ${selectedTimestamp === timestamp
-                                            ? 'bg-blue-500 text-white'
-                                            : 'bg-gray-200 hover:bg-gray-300'
+                                        ? 'bg-blue-500 text-white'
+                                        : 'bg-gray-200 hover:bg-gray-300'
                                         }`}
                                     onClick={() => handleTimestampClick(timestamp)}
                                 >
@@ -78,42 +78,43 @@ export default function StreamPage() {
                 </div>
             </div>
 
-            {modal && (
-                <div className="fixed inset-y-0 right-0 w-full sm:w-64 bg-white border-l shadow-lg flex flex-col z-50 transition-transform duration-300 ease-in-out overflow-hidden">
-                    <div className="p-4 border-b flex justify-between items-center">
-                        <h2 className="text-lg font-semibold">Similar moments:</h2>
-                        <button
-                            onClick={toggleModal}
-                            className="text-gray-500 hover:text-gray-700"
-                        >
-                            <X className="w-6 h-6" />
-                        </button>
-                    </div>
-                    <div className="overflow-y-auto flex-1">
-                        <div className="flex flex-col p-4 gap-3">
-                            {[
-                                "video1",
-                                "video2",
-                                "video3",
-                                "video4",
-                                "video5",
-                                "video6",
-                                "video7",
-                                "video8",
-                                "video9",
-                                "video10",
-                            ].map((number) => (
-                                <div
-                                    key={number}
-                                    className="aspect-square bg-gray-200 flex items-center justify-center hover:bg-gray-300"
-                                >
-                                    {number}
-                                </div>
-                            ))}
-                        </div>
+            <div
+                className={`fixed inset-y-0 right-0 w-full sm:w-64 bg-white border-l shadow-lg flex flex-col z-50 overflow-hidden transition-all duration-300 ease-in-out ${modal ? 'translate-x-0' : 'translate-x-full'
+                    }`}
+            >
+                <div className="p-4 border-b flex justify-between items-center">
+                    <h2 className="text-lg font-semibold">Similar moments:</h2>
+                    <button
+                        onClick={toggleModal}
+                        className="text-gray-500 hover:text-gray-700"
+                    >
+                        <X className="w-6 h-6" />
+                    </button>
+                </div>
+                <div className="overflow-y-auto flex-1">
+                    <div className="flex flex-col p-4 gap-3">
+                        {[
+                            "video1",
+                            "video2",
+                            "video3",
+                            "video4",
+                            "video5",
+                            "video6",
+                            "video7",
+                            "video8",
+                            "video9",
+                            "video10",
+                        ].map((number) => (
+                            <div
+                                key={number}
+                                className="aspect-square bg-gray-200 flex items-center justify-center hover:bg-gray-300"
+                            >
+                                {number}
+                            </div>
+                        ))}
                     </div>
                 </div>
-            )}
+            </div>
         </div>
     );
 }
