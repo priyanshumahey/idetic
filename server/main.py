@@ -1,6 +1,8 @@
 from typing import Union
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from pydantic import BaseModel
 from utils.process import process_handler, process_all
 from utils.search import search_handler
@@ -10,11 +12,27 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "https://idetic.vercel.app/"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Process all unprocessed video files
 process_all()
 
 
 class FileItem(BaseModel):
-    audio_id: str
+    video_id: str
 
 class SearchItem(BaseModel):
     search_string: str
@@ -27,7 +45,7 @@ def read_root():
 # given file id, I need to process
 @app.post("/process")
 def process(file_item: FileItem):
-    process_handler(file_item.audio_id)
+    process_handler(file_item.video_id)
     return {"Response": "Success"}
 
 
