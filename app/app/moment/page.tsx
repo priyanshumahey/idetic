@@ -110,13 +110,17 @@ export default function StreamPage() {
             </div>
 
             <div className="flex-grow flex flex-col p-4">
+            {/* Main Video */}
               <div className="flex-grow bg-black rounded-md flex items-center justify-center mb-4">
-                <span className="text-white">video here</span>
+                <video
+                  className="flex-grow h-[70vh] bg-black rounded-md flex items-center justify-center mb-4  aspect-video rounded-sm shadow-lg"
+                  src={""}
+                  controls
+                />
+
               </div>
               <div className="flex flex-col gap-5">
-                <div className="flex justify-center">
-                  <h2>Timestamp</h2>
-                </div>
+                {/* Video Timestamps */}
                 <div className="flex justify-center space-x-4">
                   {["1:05", "2:05", "3:05", "4:05"].map((timestamp) => (
                     <button
