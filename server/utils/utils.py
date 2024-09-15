@@ -150,8 +150,35 @@ def grab_all_vid_ids():
     results = client.query("videos:get")
     return [vid['body'] for vid in results]
 
+def upload_list(embedding_list):
+    # just convert our torch tensors to python lists to upload
+    upload_list = [
+        {
+            "embedding": embedding_obj['embedding'].tolist(),
+            "isText": embedding_obj['isText'],
+            "timeStamp": embedding_obj['timeStamp'],
+            "videoId": embedding_obj['videoId']
+        } for embedding_obj in embedding_list
+    ]
+
+    client.mutation("frameEmbedding:uploadEmbeddings", args={'embeddingList': upload_list})
+
 if __name__ == "__main__":
-    ids = grab_all_vid_ids()
-    print(ids)
+    # ids = grab_all_vid_ids()
+    # print(ids)
     # download_video("kg222tv5nwhmf76v8b5qht0xx570svj2", './test.mp4')
+    upload([
+        {
+            'embedding': torch.ones(768),
+            'videoId': "kg222tv5nwhmf76v8b5qht0xx570svj2",
+            'timeStamp': int(2),
+            'isText': False
+        },
+        {
+            'embedding': torch.zeros(768),
+            'videoId': "kg222tv5nwhmf76v8b5qht0xx570svj2",
+            'timeStamp': int(3),
+            'isText': False
+        }
+    ])
 
