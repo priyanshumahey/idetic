@@ -17,7 +17,7 @@ import { search } from "@/lib/utils";
 
 async function pingAPI(storageId: string) {
   console.log(storageId);
-  const res = await fetch("http://localhost:8000/process", {
+  const res = await fetch("https://660e-129-97-124-74.ngrok-free.app/process", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
