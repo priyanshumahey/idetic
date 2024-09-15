@@ -9,10 +9,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Container } from "@mui/material";
 import { useMutation, useQuery } from "convex/react";
 import { Loader2, SearchIcon, UploadCloud } from "lucide-react";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { api } from "../../convex/_generated/api";
 import { UserVideos } from "@/components/UserVideos";
+import { search } from "@/lib/utils";
 
 async function pingAPI(storageId: string) {
   console.log(storageId);
@@ -109,9 +110,20 @@ export default function Home() {
     }
   }
 
+  async function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    console.log(searchTerm);
+    const json = await search(searchTerm);
+    console.log(json);
+    // console.log(res);
+  }
+
   return (
     <Container className={`mt-8 flex justify-center ${styles.container}`}>
-      <div className="max-w-lg flex items-center justify-center w-full space-x-4 relative">
+      <form
+        onSubmit={handleSearch}
+        className="max-w-lg flex items-center justify-center w-full space-x-4 relative"
+      >
         <SearchIcon className="w-6 h-6 text-gray-400 absolute left-8" />
         <Input
           placeholder="Type in a search query"
@@ -121,7 +133,7 @@ export default function Home() {
           }}
           className="w-full rounded-full p-6 text-xl pl-14"
         />
-      </div>
+      </form>
 
       {/* VIDEO UPLOADER */}
       <Card className="w-full">
