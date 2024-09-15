@@ -58,14 +58,15 @@ export default function StreamPage() {
               url: ""
             });
             
-            for (let k = 0; k < userVideos!.length; k++) {
-                console.log("User videos log")
-                console.log(userVideos[k].body)
-                console.log(json[i].videoId)
-                if (userVideos[k].body === json[i].videoId) {
-                    processed[processed.length-1].url = userVideos[k].url;
+            if (userVideos) {
+                for (let k = 0; k < userVideos.length; k++) {
+                    console.log("User videos log")
+                    console.log(userVideos[k].body)
+                    console.log(json[i].videoId)
+                    if (userVideos[k].body === json[i].videoId) {
+                        processed[processed.length-1].url = userVideos[k].url;
+                    }
                 }
-
             }
 
 
