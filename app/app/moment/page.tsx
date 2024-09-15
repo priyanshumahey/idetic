@@ -2,15 +2,19 @@
 import { Input } from "@/components/ui/input";
 import { SearchIcon, X } from 'lucide-react';
 import { useState } from 'react';
-import { Toggle } from "@/components/ui/toggle"
 
 export default function StreamPage() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [searchTerm, setSearchTerm] = useState("");
     const [modal, setModal] = useState(false);
+    const [selectedTimestamp, setSelectedTimestamp] = useState<string | null>(null);
 
     function toggleModal() {
         setModal(!modal);
+    }
+
+    function handleTimestampClick(timestamp: string | null) {
+        setSelectedTimestamp(timestamp === selectedTimestamp ? null : timestamp);
     }
 
     return (
@@ -57,9 +61,16 @@ export default function StreamPage() {
                             <h2>Timestamp</h2>
                         </div>
                         <div className="flex justify-center space-x-4">
-                            {["1:05", "2:05", "3:05", "4:05"].map((num) => (
-                                <button key={num} className="px-4 py-2 bg-gray-200 rounded">
-                                    {num}
+                            {["1:05", "2:05", "3:05", "4:05"].map((timestamp) => (
+                                <button
+                                    key={timestamp}
+                                    className={`px-4 py-2 rounded transition-colors ${selectedTimestamp === timestamp
+                                            ? 'bg-blue-500 text-white'
+                                            : 'bg-gray-200 hover:bg-gray-300'
+                                        }`}
+                                    onClick={() => handleTimestampClick(timestamp)}
+                                >
+                                    {timestamp}
                                 </button>
                             ))}
                         </div>
