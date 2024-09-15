@@ -35,7 +35,11 @@ export const search = action({
         ids: results.map((result) => result._id),
       }
     );
-    return frames;
+
+    return frames.map((f, i) => ({
+      ...results[i],
+      ...f,
+    }));
     // return results;
   },
 });

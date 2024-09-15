@@ -2,9 +2,9 @@ from typing import Union
 import os
 import subprocess
 
-from utils.file_transfer import download_video
+from utils.file_transfer import download_video, upload_list, grab_all_vid_ids
 from utils.utils import split_audio
-from utils.embedding import  embed_text_chunks, embed_text, embed_video
+from utils.embedding import  embed_text_chunks, embed_video
 
 import ffmpeg
 from dotenv import load_dotenv
@@ -13,7 +13,10 @@ import subprocess
 load_dotenv()
 
 def process_handler(uuid: str):
-    print(os.listdir("data/unprocessed"))
+    if uuid in os.listdir("data/processed"):
+        print(os.listdir("data/processed"))
+        print("Already processed")
+        return
 
     # Extract audio from video and convert to WAV
     os.makedirs(f'data/processed/{uuid}', exist_ok=True)
@@ -21,6 +24,8 @@ def process_handler(uuid: str):
 
     video_file_path = f'data/unprocessed/{uuid}'
     download_video(uuid, video_file_path)
+    # ffmpeg.input(video_file_path).output(f"{video_file_path}.mp4", format="mp4").run()
+    # video_file_path = f'{video_file_path}.mp4'
     audio_file_path = f'data/processed/{uuid}/{uuid}.wav'
     ffmpeg.input(video_file_path).output(audio_file_path, ar=16000, ac=1, acodec='pcm_s16le').run()
 
@@ -43,7 +48,7 @@ def process_handler(uuid: str):
         pass
 
     embeddings = embed_text_chunks(embedding_input)
-    video_embeddings = embed_video(audio_file_path)
+    video_embeddings = embed_video(video_file_path)
 
     mega_embedding = []
 
@@ -51,7 +56,8 @@ def process_handler(uuid: str):
         embedding = {
             "isText": False,
             "embedding": el,
-            "ts": i
+            "timeStamp": i,
+            "videoId": uuid
         }
         mega_embedding.append(embedding)
 
@@ -60,11 +66,18 @@ def process_handler(uuid: str):
             "embedding": el,
             "isText": True,
             "timeStamp": i*10,
-            "videoId": ""
+            "videoId": uuid
 
         }
         mega_embedding.append(embedding)
-        
-    print(mega_embedding)
 
+    upload_list(mega_embedding)
+    os.remove(video_file_path)
 
+def process_all():
+    all_vids = grab_all_vid_ids()
+    processed = os.listdir("data/processed")
+    for vid in all_vids:
+        if vid not in processed:
+            process_handler(vid)
+            print("Processed: ", vid)
