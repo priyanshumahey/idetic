@@ -14,6 +14,8 @@ import { Loader2, SearchIcon, UploadCloud } from "lucide-react";
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { api } from "../../convex/_generated/api";
+import { useRouter } from 'next/navigation';
+
 
 async function pingAPI(storageId: string) {
   console.log(storageId);
@@ -34,6 +36,8 @@ export default function Home() {
   const sendImage = useMutation(api.videos.sendImage);
   const { user, isAuthenticated } = useAuth0();
   const messages = useQuery(api.listMessages.list);
+  const router = useRouter();
+
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -113,8 +117,8 @@ export default function Home() {
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     console.log(searchTerm);
-    const json = await search(searchTerm);
-    console.log(json);
+    router.push(`/moment?query=${searchTerm}`)
+
     // console.log(res);
   }
 
