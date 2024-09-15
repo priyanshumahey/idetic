@@ -38,7 +38,8 @@ def search(search_item: SearchItem):
     results = [{
         "videoId": search_result["videoId"],
         "timeStamp": search_result["timeStamp"],
-        "isText": search_result["videoId"]
+        "isText": search_result["isText"],
+        "score": search_result["_score"]
     } for search_result in results ]
-    # print(results)
+    print(results)
     return results
