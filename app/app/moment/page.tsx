@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { SearchIcon, X } from 'lucide-react';
 import { Input } from "@/components/ui/input";
+import { Toggle } from "@/components/ui/toggle"
 
 export default function StreamPage() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -45,9 +46,9 @@ export default function StreamPage() {
                         </div>
                         <div className="flex justify-center space-x-4">
                             {['1:05', '2:05', '3:05', '4:05'].map((num) => (
-                                <button key={num} className="px-4 py-2 bg-gray-200 rounded">
-                                    {num}
-                                </button>
+                                <Toggle key={num} className="px-4 py-2 rounded">
+                                    <b>{num}</b>
+                                </Toggle>
                             ))}
                         </div>
                     </div>
