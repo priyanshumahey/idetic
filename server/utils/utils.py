@@ -126,13 +126,9 @@ load_dotenv()
 
 client = ConvexClient(os.getenv("CONVEX_URL"))
 
-# print(client.query("videos:getVideoUrl", args={'videoId': "kg222tv5nwhmf76v8b5qht0xx570svj2"}))
-
 def download_from_url(url, output_path):
     response = requests.get(url, stream=True)
     response.raise_for_status()  # Raise an exception for bad status codes
-
-    file_size = int(response.headers.get('Content-Length', 0))
 
     # Open the output file in binary mode
     with open(output_path, 'wb') as file:
@@ -150,8 +146,39 @@ def download_video(videoId, output_path):
 
     download_from_url(url, output_path)
 
-    print(url)
+def grab_all_vid_ids():
+    results = client.query("videos:get")
+    return [vid['body'] for vid in results]
+
+def upload_list(embedding_list):
+    # just convert our torch tensors to python lists to upload
+    upload_list = [
+        {
+            "embedding": embedding_obj['embedding'].tolist(),
+            "isText": embedding_obj['isText'],
+            "timeStamp": embedding_obj['timeStamp'],
+            "videoId": embedding_obj['videoId']
+        } for embedding_obj in embedding_list
+    ]
+
+    client.mutation("frameEmbedding:uploadEmbeddings", args={'embeddingList': upload_list})
 
 if __name__ == "__main__":
-    download_video("kg222tv5nwhmf76v8b5qht0xx570svj2", './test.mp4')
+    # ids = grab_all_vid_ids()
+    # print(ids)
+    # download_video("kg222tv5nwhmf76v8b5qht0xx570svj2", './test.mp4')
+    upload([
+        {
+            'embedding': torch.ones(768),
+            'videoId': "kg222tv5nwhmf76v8b5qht0xx570svj2",
+            'timeStamp': int(2),
+            'isText': False
+        },
+        {
+            'embedding': torch.zeros(768),
+            'videoId': "kg222tv5nwhmf76v8b5qht0xx570svj2",
+            'timeStamp': int(3),
+            'isText': False
+        }
+    ])
 
