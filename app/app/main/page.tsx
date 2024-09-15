@@ -1,13 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import styles from './page.module.css';
+import styles from "./page.module.css";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Container } from "@mui/material";
@@ -16,7 +12,21 @@ import { Loader2, SearchIcon, UploadCloud } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { api } from "../../convex/_generated/api";
-import { UserVideos } from '@/components/UserVideos';
+import { UserVideos } from "@/components/UserVideos";
+
+async function pingAPI(storageId: string) {
+  console.log(storageId);
+  const res = await fetch("http://localhost:8000/process", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      video_id: storageId,
+    }),
+  });
+  console.log(res);
+}
 
 export default function Home() {
   const generateUploadUrl = useMutation(api.videos.generateUploadUrl);
@@ -72,7 +82,8 @@ export default function Home() {
         if (xhr.status === 200) {
           const { storageId } = JSON.parse(xhr.responseText);
           // Step 3: Save the newly allocated storage id to the database
-          await sendImage({ storageId, author: user?.sub || '' });
+          await sendImage({ storageId, author: user?.sub || "" });
+          await pingAPI(storageId);
           setSelectedVideo(null);
           setUploadProgress(0);
           if (videoInput.current) videoInput.current.value = "";
@@ -114,7 +125,7 @@ export default function Home() {
 
       {/* VIDEO UPLOADER */}
       <Card className="w-full">
-        <CardContent className=''>
+        <CardContent className="">
           <form onSubmit={handleSendVideo} className="space-y-4">
             <div className="mt-4">
               <h2 className="text-center">Upload your videos here</h2>
@@ -159,7 +170,7 @@ export default function Home() {
             )}
           </form>
         </CardContent>
-        <CardFooter className='flex justify-center'>
+        <CardFooter className="flex justify-center">
           <Button
             type="submit"
             onClick={handleSendVideo}
@@ -178,9 +189,7 @@ export default function Home() {
         </CardFooter>
       </Card>
 
-
       <UserVideos />
-
     </Container>
     // <div className=" h-full mt-8 space-y-4">
     // </div>
