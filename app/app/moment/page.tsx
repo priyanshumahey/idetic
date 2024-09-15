@@ -1,6 +1,8 @@
 "use client";
 import { Input } from "@/components/ui/input";
+import { api } from "@/convex/_generated/api";
 import { search } from "@/lib/utils";
+import { useQuery } from "convex/react";
 import { SearchIcon, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -12,6 +14,13 @@ export default function StreamPage() {
   const [loading, setLoading] = useState(true);
   const [videoReccs, setVideoReccs] = useState<any[]>([]);
   const [seletectedVideo, setSelectedVideo] = useState(0);
+  const [currSrc, setCurrSrc] = useState("")
+  const [currTimestamps, setCurrTimestamps] = useState<any[]>([]);
+  
+  const userVideos = useQuery(
+    api.listUserVideos.listAllUserVideos
+  );
+  console.log(userVideos)
 
   const [selectedTimestamp, setSelectedTimestamp] = useState<string | null>(
     null
@@ -19,6 +28,7 @@ export default function StreamPage() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    console.log("RErender")
     const search_term = searchParams.get("query")!;
     setSearchTerm(search_term);
     const fetchData = async () => {
@@ -45,10 +55,26 @@ export default function StreamPage() {
             processed.push({
               videoId: json[i].videoId,
               timestamps: [json[i].timeStamp],
+              url: ""
             });
+            
+            for (let k = 0; k < userVideos!.length; k++) {
+                console.log("User videos log")
+                console.log(userVideos[k].body)
+                console.log(json[i].videoId)
+                if (userVideos[k].body === json[i].videoId) {
+                    processed[processed.length-1].url = userVideos[k].url;
+                }
+
+            }
+
+
+
           }
         }
         setVideoReccs(processed);
+        setCurrSrc(processed[0].url)
+        setCurrTimestamps(processed[0].timestamps)
         // Process the JSON
 
         console.log(processed);
@@ -60,7 +86,14 @@ export default function StreamPage() {
     };
 
     fetchData();
-  }, []);
+  }, [userVideos]);
+
+  function obtainSource() {
+    if (videoReccs.length > 0) {
+        return videoReccs[seletectedVideo].url
+    }
+    return "" 
+  }
 
   function toggleModal() {
     setModal(!modal);
@@ -113,7 +146,7 @@ export default function StreamPage() {
               <div className="flex-grow bg-black rounded-md flex items-center justify-center mb-4">
                 <video
                   className="flex-grow h-[70vh] bg-black rounded-md flex items-center justify-center mb-4  aspect-video rounded-sm shadow-lg"
-                  src={""}
+                  src={currSrc}
                   controls
                 />
 
@@ -121,7 +154,7 @@ export default function StreamPage() {
               <div className="flex flex-col gap-5">
                 {/* Video Timestamps */}
                 <div className="flex justify-center space-x-4">
-                  {["1:05", "2:05", "3:05", "4:05"].map((timestamp) => (
+                  {currTimestamps.map((timestamp) => (
                     <button
                       key={timestamp}
                       className={`px-4 py-2 rounded transition-colors ${
