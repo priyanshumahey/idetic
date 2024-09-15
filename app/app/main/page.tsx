@@ -100,7 +100,7 @@ export default function Home() {
 
   return (
     <Container className={`mt-8 flex justify-center ${styles.container}`}>
-      {/* <div className="max-w-lg flex items-center justify-center w-full space-x-4 relative">
+      <div className="max-w-lg flex items-center justify-center w-full space-x-4 relative">
         <SearchIcon className="w-6 h-6 text-gray-400 absolute left-8" />
         <Input
           placeholder="Type in a search query"
@@ -110,7 +110,7 @@ export default function Home() {
           }}
           className="w-full rounded-full p-6 text-xl pl-14"
         />
-      </div> */}
+      </div>
 
       {/* VIDEO UPLOADER */}
       <Card className="w-full">
