@@ -1,4 +1,5 @@
-from utils import client, embed_text
+from utils.file_transfer import client
+from utils.embedding import embed_text
 
 def search(query):
     query_embed = embed_text(query).tolist()
