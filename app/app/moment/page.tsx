@@ -1,26 +1,25 @@
 "use client";
+
 import { Input } from "@/components/ui/input";
 import { api } from "@/convex/_generated/api";
 import { search } from "@/lib/utils";
 import { useQuery } from "convex/react";
 import { SearchIcon, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
-export default function StreamPage() {
+function StreamComponent() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [searchTerm, setSearchTerm] = useState("");
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [videoReccs, setVideoReccs] = useState<any[]>([]);
   const [seletectedVideo, setSelectedVideo] = useState(0);
-  const [currSrc, setCurrSrc] = useState("")
+  const [currSrc, setCurrSrc] = useState("");
   const [currTimestamps, setCurrTimestamps] = useState<any[]>([]);
-  
-  const userVideos = useQuery(
-    api.listUserVideos.listAllUserVideos
-  );
-  console.log(userVideos)
+
+  const userVideos = useQuery(api.listUserVideos.listAllUserVideos);
+  console.log(userVideos);
 
   const [selectedTimestamp, setSelectedTimestamp] = useState<string | null>(
     null
@@ -28,7 +27,7 @@ export default function StreamPage() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    console.log("RErender")
+    console.log("RErender");
     const search_term = searchParams.get("query")!;
     setSearchTerm(search_term);
     const fetchData = async () => {
@@ -55,27 +54,24 @@ export default function StreamPage() {
             processed.push({
               videoId: json[i].videoId,
               timestamps: [json[i].timeStamp],
-              url: ""
+              url: "",
             });
-            
+
             if (userVideos) {
-                for (let k = 0; k < userVideos.length; k++) {
-                    console.log("User videos log")
-                    console.log(userVideos[k].body)
-                    console.log(json[i].videoId)
-                    if (userVideos[k].body === json[i].videoId) {
-                        processed[processed.length-1].url = userVideos[k].url;
-                    }
+              for (let k = 0; k < userVideos.length; k++) {
+                console.log("User videos log");
+                console.log(userVideos[k].body);
+                console.log(json[i].videoId);
+                if (userVideos[k].body === json[i].videoId) {
+                  processed[processed.length - 1].url = userVideos[k].url;
                 }
+              }
             }
-
-
-
           }
         }
         setVideoReccs(processed);
-        setCurrSrc(processed[0].url)
-        setCurrTimestamps(processed[0].timestamps)
+        setCurrSrc(processed[0].url);
+        setCurrTimestamps(processed[0].timestamps);
         // Process the JSON
 
         console.log(processed);
@@ -91,9 +87,9 @@ export default function StreamPage() {
 
   function obtainSource() {
     if (videoReccs.length > 0) {
-        return videoReccs[seletectedVideo].url
+      return videoReccs[seletectedVideo].url;
     }
-    return "" 
+    return "";
   }
 
   function toggleModal() {
@@ -143,14 +139,13 @@ export default function StreamPage() {
             </div>
 
             <div className="flex-grow flex flex-col p-4">
-            {/* Main Video */}
+              {/* Main Video */}
               <div className="flex-grow bg-black rounded-md flex items-center justify-center mb-4">
                 <video
                   className="flex-grow h-[70vh] bg-black rounded-md flex items-center justify-center mb-4  aspect-video rounded-sm shadow-lg"
                   src={currSrc}
                   controls
                 />
-
               </div>
               <div className="flex flex-col gap-5">
                 {/* Video Timestamps */}
@@ -212,5 +207,13 @@ export default function StreamPage() {
         </div>
       )}
     </>
+  );
+}
+
+export default function StreamPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <StreamComponent />
+    </Suspense>
   );
 }
