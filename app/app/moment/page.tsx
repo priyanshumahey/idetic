@@ -7,6 +7,8 @@ import { useQuery } from "convex/react";
 import { SearchIcon, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+import { listAllUserVideos } from "@/convex/listUserVideos";
+import Link from "next/link";
 
 function StreamComponent() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -135,6 +137,7 @@ function StreamComponent() {
                     />
                   </svg>
                 </button>
+                <Link href="/">Home</Link>
               </div>
             </div>
 
