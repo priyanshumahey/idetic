@@ -1,14 +1,11 @@
 from typing import Union
-import os
-import subprocess
 
 from fastapi import FastAPI
 from pydantic import BaseModel
 from utils.process import process_handler, process_all
+from utils.search import search_handler
 
-import ffmpeg
 from dotenv import load_dotenv
-import subprocess
 
 load_dotenv()
 
@@ -18,7 +15,6 @@ process_all()
 
 class FileItem(BaseModel):
     audio_id: str
-
 
 class SearchItem(BaseModel):
     search_string: str
@@ -37,22 +33,12 @@ def process(file_item: FileItem):
 
 @app.post("/search")
 def search(search_item: SearchItem):
-    #  embedding = embed_text(search_item.search_string)
-    pass
-
-
-# [text1, text3, ...]
-# [embed1, embed2, embed, ....]
-
-
-# {
-#     uuid_ts: {
-#         text: str
-#         embedding: embedding
-#         ts: int
-
-#     }
-# }
-
-
-# uuid_ts 
+    print(search_item.search_string)
+    results = search_handler(search_item.search_string)
+    results = [{
+        "videoId": search_result["videoId"],
+        "timeStamp": search_result["timeStamp"],
+        "isText": search_result["videoId"]
+    } for search_result in results ]
+    # print(results)
+    return results
