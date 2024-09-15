@@ -17,7 +17,7 @@ import { api } from "../../convex/_generated/api";
 
 async function pingAPI(storageId: string) {
   console.log(storageId);
-  const res = await fetch("/api/localserver//process", {
+  const res = await fetch("/api/localserver/process", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
