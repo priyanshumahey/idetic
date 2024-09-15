@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export async function search(searchTerm: string) {
-  const res = await fetch("https://660e-129-97-124-74.ngrok-free.app/search", {
+  const res = await fetch("/api/localserver/search", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
