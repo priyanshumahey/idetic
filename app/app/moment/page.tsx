@@ -1,10 +1,9 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { SearchIcon, X } from "lucide-react";
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import { search } from "@/lib/utils";
-import { setDefaultAutoSelectFamily } from "net";
+import { SearchIcon, X } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function StreamPage() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
