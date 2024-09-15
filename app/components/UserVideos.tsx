@@ -23,7 +23,6 @@ export const UserVideos = () => {
   if (!isAuthenticated) {
     return <div>Please log in to view your videos.</div>;
   }
-
   return (
     <div className="container mx-auto px-4">
       <h2 className="text-2xl font-bold mb-4">Your Videos</h2>
