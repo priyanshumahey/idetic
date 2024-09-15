@@ -17,7 +17,7 @@ const schema = defineSchema({
   frameEmbeddings: defineTable({
     embedding: v.array(v.float64()),
     videoId: v.id("_storage"),
-    timeStamp: v.int64(),
+    timeStamp: v.float64(),
     isText: v.boolean(),
   }).vectorIndex("by_embedding", {
     vectorField: "embedding",

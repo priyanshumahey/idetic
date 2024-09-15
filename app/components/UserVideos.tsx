@@ -23,14 +23,20 @@ export const UserVideos = () => {
   if (!isAuthenticated) {
     return <div>Please log in to view your videos.</div>;
   }
-
   return (
     <div className="container mx-auto px-4">
       <h2 className="text-2xl font-bold mb-4">Your Videos</h2>
       {userVideos === undefined ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[...Array(6)].map((_, index) => (
-            <Skeleton key={index} className="w-full aspect-video rounded-lg" />
+            <div key={index} className="relative w-full aspect-video">
+              <Skeleton className="w-full h-full rounded-lg" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12 text-gray-300">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                </svg>
+              </div>
+            </div>
           ))}
         </div>
       ) : userVideos === null ? (
@@ -44,7 +50,6 @@ export const UserVideos = () => {
                   src={video.url}
                   controls
                   className="w-full aspect-video rounded-sm shadow-lg"
-                // allow="fullscreen"
                 />
               ) : (
                 <p className="text-gray-700">

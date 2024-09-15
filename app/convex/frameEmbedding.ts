@@ -21,7 +21,7 @@ export const uploadEmbedding = mutation({
     embedding: v.array(v.float64()),
     isText: v.boolean(),
     videoId: v.id("_storage"),
-    timeStamp: v.int64(),
+    timeStamp: v.float64(),
   },
   handler: async (ctx, args) => {
     const { embedding, isText, videoId, timeStamp } = args;
@@ -41,7 +41,7 @@ export const uploadEmbeddings = mutation({
         embedding: v.array(v.float64()),
         isText: v.boolean(),
         videoId: v.id("_storage"),
-        timeStamp: v.int64(),
+        timeStamp: v.float64(),
       })
     ),
   },
