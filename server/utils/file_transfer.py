@@ -55,6 +55,12 @@ if __name__ == "__main__":
     print(ids)
     upload_list([
         {
+            'embedding': torch.zeros(768),
+            'videoId': "kg222tv5nwhmf76v8b5qht0xx570svj2",
+            'timeStamp': int(1),
+            'isText': False
+        },
+        {
             'embedding': torch.ones(768),
             'videoId': "kg222tv5nwhmf76v8b5qht0xx570svj2",
             'timeStamp': int(2),

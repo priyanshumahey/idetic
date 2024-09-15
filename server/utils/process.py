@@ -3,7 +3,8 @@ import os
 import subprocess
 
 from utils.file_transfer import download_video
-from utils.utils import split_audio, embed_text_chunks, embed_text, embed_video
+from utils.utils import split_audio
+from utils.embedding import  embed_text_chunks, embed_text, embed_video
 
 import ffmpeg
 from dotenv import load_dotenv
